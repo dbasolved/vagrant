@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# Name of the VM and the hostname inside
+NAME1 = "OGG12c219cUpgrade"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.proxy.http     = "http://www-proxy.us.oracle.com:80"
+  config.proxy.https    = "https://www-proxy.us.oracle.com:80"
+  config.proxy.no_proxy = "localhost,127.0.0.1"
+
+  config.vm.network "private_network", type: "dhcp"
+
+    config.vm.define "gg" do |gg|
+      gg.vm.box = "ol76"
+      gg.vm.box_url = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+      gg.vm.hostname = NAME1
+      
+    # VM Customization
+      gg.vm.provider "virtualbox" do |v|
+        v.customize [ "modifyvm", :id,
+          "--memory", 2048,
+          "--cpus", 2,
+          "--paravirtprovider", "kvm",
+          "--name", NAME1
+        ]
+
+      # Oracle port forwarding
+      for i in 16000..16005
+        gg.vm.network "forwarded_port", guest: i, host: i
+      end
+
+      #gg.vm.network "private_network", :type => 'dhcp'
+      gg.vm.network "forwarded_port", guest: 1521, host: 15213
+      gg.vm.network "forwarded_port", guest: 5901, host: 59013
+
+      gg.vm.synced_folder "/Users/bocurtis/Test_Software", "/Test_Software"
+
+      gg.vm.provision "provision_gg", type: "shell", path: "scripts/GGinstall.sh", env:
+      {
+        "OGG_SHIPHOME"          => "V975838-01-OGG123.zip",
+        "CLIENT_SHIPHOME_12C"   => "linuxx64_12201_client.zip",
+        "CLIENT_SHIPHOME_19C"   => "LINUX.X64_193000_client.zip",
+        "ORA_INVENTORY"		      => "/opt/app/oraInventory",
+        "ORACLE_BASE" 		      => "/opt/app/oracle",
+        "ORACLE_HOME"           => "/opt/app/oracle/product/12.2.0/client_1",
+        "ORACLE_HOME_12C" 		  => "/opt/app/oracle/product/12.2.0/client_1",
+        "ORACLE_HOME_19C" 		  => "/opt/app/oracle/product/19.1.0/client_1",
+        "TNS_ADMIN"             => "/opt/app/oracle/network/admin",
+        "OGG_HOME" 		          => "/opt/app/oracle/product/12.3.0/oggcore_1",
+        "DEPLOYMENT_BASE" 	    => "/opt/app/oracle/gg_deployments",
+        "JAVA_HOME"             => "/opt/app/oracle/product/12.3.0/oggcore_1/jdk",
+        "ORACLE_CHARACTERSET"  	=> "AL32UTF8",
+        "ORACLE_EDITION" 	      => "EE",
+        "ORACLE_PWD"            => "Welcome1",
+        "DB_VERSION"            => "ORA12c"
+      }
+    end
+  end
+end

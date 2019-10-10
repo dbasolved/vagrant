@@ -1,0 +1,107 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# Name of the VM and the hostname inside
+NAME1 = "DB19C"
+NAME2 = "OGG19C"
+NAME3 = 
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  #config.proxy.http     = "http://www-proxy.us.oracle.com:80"
+  #config.proxy.https    = "https://www-proxy.us.oracle.com:80"
+  #config.proxy.no_proxy = "localhost,127.0.0.1"
+
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.define "db" do |db|
+      db.vm.box = "ol76"
+      db.vm.box_url = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+      db.vm.hostname = NAME1
+      
+      db.vm.provider "virtualbox" do |v|
+        v.customize [ "modifyvm", :id,
+          "--memory", 2048,
+          "--cpus", 2,
+          "--paravirtprovider", "kvm",
+          "--name", NAME1
+        ]
+    
+        #db.vm.network "private_network", :type => 'dhcp'
+        db.vm.network "forwarded_port", guest: 1539, host: 15391
+        db.vm.network "forwarded_port", guest: 5500, host: 55001
+        db.vm.network "forwarded_port", guest: 5901, host: 59011
+
+        db.vm.synced_folder "/Users/bocurtis/Test_Software", "/Test_Software"
+
+        db.vm.provision "provision_db", type: "shell", path: "scripts/DBinstall.sh", env:
+        {
+          "DB_SHIPHOME"       => "LINUX.X64_193000_db_home.zip",
+          "ORA_INVENTORY"		  => "/opt/app/oraInventory",
+          "ORACLE_BASE" 		  => "/opt/app/oracle",
+          "ORACLE_HOME" 		  => "/opt/app/oracle/product/19.3.0/dbhome_1",
+          "ORACLE_SID"  		  => "orcl",
+          "PDB_NAME"          => "oggtst",
+          "ORACLE_CHARACTERSET"  	=> "AL32UTF8",
+          "ORACLE_EDITION" 	  => "EE",
+          "ORACLE_PWD"        => "Welcome1",
+          "DB_VERSION"        => "ORA19c"
+        }
+      end
+  end
+  
+  config.vm.define "gg" do |gg|
+      gg.vm.box = "ol76"
+      gg.vm.box_url = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+      gg.vm.hostname = NAME2
+      
+    # VM Customization
+      gg.vm.provider "virtualbox" do |v|
+        v.customize [ "modifyvm", :id,
+          "--memory", 1024,
+          "--cpus", 2,
+          "--paravirtprovider", "kvm",
+          "--name", NAME2
+        ]
+
+      # Oracle port forwarding
+      for i in 16000..16005
+        gg.vm.network "forwarded_port", guest: i, host: i
+      end
+
+      for i in 17000..17005
+        gg.vm.network "forwarded_port", guest: i, host: i
+      end
+
+      #gg.vm.network "private_network", :type => 'dhcp'
+      gg.vm.network "forwarded_port", guest: 1539, host: 15392
+      gg.vm.network "forwarded_port", guest: 5901, host: 59012
+      gg.vm.network "forwarded_port", guest: 443, host: 443
+
+      gg.vm.synced_folder "/Users/bocurtis/Test_Software", "/Test_Software"
+
+      gg.vm.provision "provision_gg", type: "shell", path: "scripts/GGinstall.sh", env:
+      {
+        "OGG_SHIPHOME"          => "V983321-01-MA-191002.zip",
+        "CLIENT_SHIPHOME_18C"   => "LINUX.X64_180000_client.zip",
+        "CLIENT_SHIPHOME_19C"   => "LINUX.X64_193000_client.zip",
+        "ORA_INVENTORY"		      => "/opt/app/oraInventory",
+        "ORACLE_BASE" 		      => "/opt/app/oracle",
+        "ORACLE_HOME"           => "/opt/app/oracle/product/19.1.0/client_1",
+        "ORACLE_HOME_18C" 		  => "/opt/app/oracle/product/18.1.0/client_1",
+        "ORACLE_HOME_19C" 		  => "/opt/app/oracle/product/19.1.0/client_1",
+        "TNS_ADMIN"             => "/opt/app/oracle/network/admin",
+        "OGG_HOME" 		          => "/opt/app/oracle/product/19.1.0/oggcore_1",
+        "DEPLOYMENT_BASE" 	    => "/opt/app/oracle/gg_deployments",
+        "JAVA_HOME"             => "/opt/app/oracle/product/19.1.0/oggcore_1/jdk",
+        "ORACLE_CHARACTERSET"  	=> "AL32UTF8",
+        "ORACLE_EDITION" 	      => "EE",
+        "ORACLE_PWD"            => "Welcome1",
+        "DB_VERSION"            => "ORA19c"
+      }
+    end
+  end
+end
