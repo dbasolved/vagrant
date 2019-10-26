@@ -85,7 +85,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       gg.vm.provision "provision_gg", type: "shell", path: "scripts/GGinstall.sh", env:
       {
-        "OGG_SHIPHOME"          => "V983321-01-MA-191002.zip",
+        "OGG_SHIPHOME"          => "191004_fbo_ggs_Linux_x64_services_shiphome.zip",
         "CLIENT_SHIPHOME_18C"   => "LINUX.X64_180000_client.zip",
         "CLIENT_SHIPHOME_19C"   => "LINUX.X64_193000_client.zip",
         "ORA_INVENTORY"		      => "/opt/app/oraInventory",
