@@ -81,7 +81,7 @@ sed -i -e "s|###ORACLE_BASE###|${ORACLE_BASE}|g" /vagrant/ora-response/client_in
 
 su -l oracle -c "yes | /vagrant/ora18c_client/client/runInstaller -silent -ignoreSysPrereqs -ignorePrereq -showProgress -waitForCompletion -responseFile /vagrant/ora-response/client_install_18c.rsp"
 $ORA_INVENTORY/orainstRoot.sh
-$ORACLE_HOME/root.sh
+${ORACLE_HOME_18C}/root.sh
 rm -f /vagrant/ora-response/client_install_18c.rsp
 
 echo "--------------------------------------------------"
@@ -99,7 +99,7 @@ sed -i -e "s|###ORACLE_BASE###|${ORACLE_BASE}|g" /vagrant/ora-response/client_in
 
 su -l oracle -c "yes | /vagrant/ora19c_client/client/runInstaller -silent -ignoreSysPrereqs -ignorePrereq -showProgress -waitForCompletion -responseFile /vagrant/ora-response/client_install_19c.rsp"
 $ORA_INVENTORY/orainstRoot.sh
-$ORACLE_HOME/root.sh
+${ORACLE_HOME_19C}/root.sh
 rm -f /vagrant/ora-response/client_install_19c.rsp
 
 echo "--------------------------------------------------"
