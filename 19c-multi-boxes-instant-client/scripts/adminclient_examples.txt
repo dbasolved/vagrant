@@ -1,0 +1,18 @@
+$OGG_HOME/bin/adminclient << EOF
+connect https://localhost:16000 deployment Atlanta as oggadmin password Welcome1 !
+info all
+EOF
+
+#Cannot prompt for confirmation when using OBEY file approach
+$OGG_HOME/bin/adminclient << EOF
+connect https://localhost:16000 deployment Atlanta as oggadmin !
+info all
+EOF
+
+#Doesn't work - why?
+$OGG_HOME/bin/adminclient << EOF
+connect https://localhost deployment Atlanta as oggadmin password Welcome1 !
+info all
+EOF
+
+#create
