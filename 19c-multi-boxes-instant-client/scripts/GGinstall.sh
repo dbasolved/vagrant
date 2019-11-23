@@ -102,6 +102,41 @@ su -l oracle -c "yes | /vagrant/oggma/fbo_ggs_Linux_x64_services_shiphome/Disk1/
 rm -f /vagrant/ora-response/oggcore.rsp
 rm -rf /vagrant/oggma
 
+su -l oracle -c "python /vagrant/scripts/ggSelfSignCerts.py"
+
+echo
+cp /vagrant/ora-response/oggca_deployment.rsp.tmpl /vagrant/ora-response/oggca_deployment.rsp 
+sed -i -e "s|###DEPLOYMENT_NAME###|Atlanta|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PWD###|WElcome12345##|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###CREATESM###|true|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###SMPORT###|16000|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###ASPORT###|16001|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###DSPORT###|16002|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###RSPORT###|16003|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PMPORT###|16004|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PMUDPPORT###|16005|g" /vagrant/ora-response/oggca_deployment.rsp
+echo
+cat /vagrant/ora-response/oggca_deployment.rsp
+echo
+su -l oracle -c "$OGG_HOME/bin/oggca.sh -silent -responseFile /vagrant/ora-response/oggca_deployment.rsp"
+rm -f /vagrant/ora-response/oggca_deployment.rsp
+
+cp /vagrant/ora-response/oggca_deployment.rsp.tmpl /vagrant/ora-response/oggca_deployment.rsp 
+sed -i -e "s|###DEPLOYMENT_NAME###|Boston|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PWD###|WElcome12345##|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###CREATESM###|false|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###SMPORT###|16000|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###ASPORT###|17001|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###DSPORT###|17002|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###RSPORT###|17003|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PMPORT###|17004|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###PMUDPPORT###|17005|g" /vagrant/ora-response/oggca_deployment.rsp
+echo
+cat /vagrant/ora-response/oggca_deployment.rsp
+echo
+su -l oracle -c "$OGG_HOME/bin/oggca.sh -silent -responseFile /vagrant/ora-response/oggca_deployment.rsp"
+rm -f /vagrant/ora-response/oggca_deployment.rsp
+
 echo "--------------------------------------------------"
 echo " INSTALLER: Oracle GoldenGate 19c Installed                  "
 echo "--------------------------------------------------"
