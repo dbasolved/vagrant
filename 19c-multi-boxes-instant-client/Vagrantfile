@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "ORACLE_BASE" 		      => "/opt/app/oracle",
           "ORACLE_HOME" 		      => "/opt/app/oracle/product/19.3.0/dbhome_1",
           "ORACLE_SID"  		      => "orcl",
-          "PDB_NAME"              => "oggsrc",
+          "PDB_NAME"              => "oggtst",
           "ORACLE_CHARACTERSET"  	=> "AL32UTF8",
           "ORACLE_EDITION" 	      => "EE",
           "ORACLE_PWD"            => "Welcome1",
