@@ -1,1 +1,0 @@
-{"virtualbox":{"/Test_Software":{"guestpath":"/Test_Software","hostpath":"/Users/bocurtis/Test_Software","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/bocurtis/Dropbox/Repositories_Working/Vagrant/19c-multi-boxes-instant-client","disabled":false,"__vagrantfile":true}}}
