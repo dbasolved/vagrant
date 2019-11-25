@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+BOX_IMAGE = "ol76"
+BOX_URL = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+
+# Name of the VM and the hostname inside
+NAME1 = "GG19c-Install"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.proxy.http     = "http://www-proxy.us.oracle.com:80"
+  config.proxy.https    = "https://www-proxy.us.oracle.com:80"
+  config.proxy.no_proxy = "localhost,127.0.0.1"
+
+  config.vm.hostname = "gg19cinstall"
+
+    config.vm.define "gg" do |gg|
+      gg.vm.box = BOX_IMAGE
+      gg.vm.box_url = BOX_URL
+      gg.vm.hostname = NAME1
+      
+    # VM Customization
+      gg.vm.provider "virtualbox" do |v|
+        v.customize [ "modifyvm", :id, "--memory", 2024 ]
+        v.customize [ "modifyvm", :id, "--cpus", 2 ]
+        v.customize [ "modifyvm", :id, "--paravirtprovider", "kvm" ]
+        v.customize [ "modifyvm", :id, "--name", NAME1 ]
+
+      gg.vm.network "forwarded_port", guest: 1521, host: 15216
+      gg.vm.network "forwarded_port", guest: 5901, host: 59016
+
+      gg.vm.synced_folder "/Users/bocurtis/Test_Software", "/Test_Software"
+
+      gg.vm.provision "provision_gg", type: "shell", path: "scripts/GGinstall.sh", env:
+      {
+        "OGG_SHIPHOME"          => "191004_fbo_ggs_Linux_x64_shiphome.zip",
+        "CLIENT_SHIPHOME_19C"   => "instantclient-basic-linux.x64-19.3.0.0.0dbru.zip",
+        "ORA_INVENTORY"		      => "/opt/app/oraInventory",
+        "ORACLE_BASE" 		      => "/opt/app/oracle",
+        "ORACLE_HOME"           => "/opt/app/oracle/product/19.1.0/client_1",
+        "ORACLE_HOME_19C_LIB"   => "/opt/app/oracle/product/19.1.0/client_1/lib",
+        "TNS_ADMIN"             => "/opt/app/oracle/network/admin",
+        "OGG_HOME" 		          => "/opt/app/oracle/product/19.1.0/oggcore_1",
+      }
+    end
+  end
+end
