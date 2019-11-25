@@ -102,7 +102,6 @@ su -l oracle -c "yes | /vagrant/oggma/fbo_ggs_Linux_x64_services_shiphome/Disk1/
 rm -f /vagrant/ora-response/oggcore.rsp
 rm -rf /vagrant/oggma
 
-<<<<<<< HEAD
 su -l oracle -c "python /vagrant/scripts/ggSelfSignCerts.py"
 
 echo
@@ -138,8 +137,6 @@ echo
 su -l oracle -c "$OGG_HOME/bin/oggca.sh -silent -responseFile /vagrant/ora-response/oggca_deployment.rsp"
 rm -f /vagrant/ora-response/oggca_deployment.rsp
 
-=======
->>>>>>> 78922e4a266780de3d797d388d8e8a811e59b05d
 echo "--------------------------------------------------"
 echo " INSTALLER: Oracle GoldenGate 19c Installed                  "
 echo "--------------------------------------------------"

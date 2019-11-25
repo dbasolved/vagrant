@@ -13,9 +13,9 @@ NAME2 = "OGG19C"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.proxy.http     = "http://www-proxy.us.oracle.com:80"
-  config.proxy.https    = "https://www-proxy.us.oracle.com:80"
-  config.proxy.no_proxy = "localhost,127.0.0.1"
+  #config.proxy.http     = "http://www-proxy.us.oracle.com:80"
+  #config.proxy.https    = "https://www-proxy.us.oracle.com:80"
+  #config.proxy.no_proxy = "localhost,127.0.0.1"
 
   config.vm.network "private_network", type: "dhcp"
 
