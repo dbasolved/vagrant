@@ -4,8 +4,8 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-BOX_IMAGE = "ol76"
-BOX_URL = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+BOX_IMAGE = "ol7-latest"
+BOX_URL = "https://yum.oracle.com/boxes/oraclelinux/latest/ol7-latest.box"
 
 # Name of the VM and the hostname inside
 NAME1 = "GG19c-Classic"
@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       
     # VM Customization
       gg.vm.provider "virtualbox" do |v|
-        v.customize [ "modifyvm", :id, "--memory", 1024 ]
+        v.customize [ "modifyvm", :id, "--memory", 512 ]
         v.customize [ "modifyvm", :id, "--cpus", 2 ]
         v.customize [ "modifyvm", :id, "--paravirtprovider", "kvm" ]
         v.customize [ "modifyvm", :id, "--name", NAME1 ]

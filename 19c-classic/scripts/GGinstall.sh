@@ -13,15 +13,15 @@ echo 'INSTALLER: Locale Fixed'
 echo "--------------------------------------------------"
 
 #install prereqs and openssl
-yum -y reinstall glibc-common
-yum -y install oracle-rdbms-server-12cR1-preinstall openssl
+yum -y -q reinstall glibc-common
+yum -y install oracle-database-preinstall-19c openssl
 
 echo "--------------------------------------------------"
 echo 'INSTALLER: Oracle database preinstall and openssl installed'
 echo "--------------------------------------------------"
 #adding server desktop and vncserver
-yum -y install xterm
-yum -y install tightvnc-server
+yum -y -q install xterm
+yum -y -q install tightvnc-server
 cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
 sed -i -e "s|<USER>|oracle|g" /etc/systemd/system/vncserver@:1.service
 
