@@ -4,8 +4,8 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-BOX_IMAGE = "ol76"
-BOX_URL = "https://yum.oracle.com/boxes/oraclelinux/ol76/ol76.box"
+BOX_IMAGE = "ol7-latest"
+BOX_URL = "https://yum.oracle.com/boxes/oraclelinux/latest/ol7-latest.box"
 
 # Name of the VM and the hostname inside
 NAME1 = "DB19C"
@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       db.vm.hostname = NAME1
       
       db.vm.provider "virtualbox" do |v|
-        v.customize [ "modifyvm", :id, "--memory", 2048 ]
+        v.customize [ "modifyvm", :id, "--memory", 1024 ]
         v.customize [ "modifyvm", :id, "--cpus", 2 ]
         v.customize [ "modifyvm", :id, "--paravirtprovider", "kvm" ]
         v.customize [ "modifyvm", :id, "--name", NAME1 ]
@@ -50,6 +50,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "ORACLE_PWD"            => "Welcome1",
           "DB_VERSION"            => "ORA19c"
         }
+
+        db.vm.provision "set_passwd", type: "shell", path: "scripts/set_passwd.sh"
       end
   end
   
@@ -66,14 +68,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             v.customize [ "modifyvm", :id, "--name", NAME2 ]
 
         # Oracle port forwarding
-        for i in 16000..16005
-          gg.vm.network "forwarded_port", guest: i, host: i
-        end
-
-        for i in 17000..17005
-          gg.vm.network "forwarded_port", guest: i, host: i
-        end
-
         gg.vm.hostname = "gg19c"
         gg.vm.network "forwarded_port", guest: 1539, host: 15392
         gg.vm.network "forwarded_port", guest: 5901, host: 59012
@@ -100,6 +94,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "ORACLE_PWD"            => "Welcome1",
           "DB_VERSION"            => "ORA19c"
         }
+
+        gg.vm.provision "set_passwd", type: "shell", path: "scripts/set_passwd.sh"
     end
   end
 end

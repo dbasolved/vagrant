@@ -1,5 +1,0 @@
-connect https://localhost:16000 deployment Atlanta as oggadmin password WElcome12345## !
-info all
-info distpath all
-connect https://localhost:16000 deployment Boston as oggadmin password WElcome12345## !
-info all

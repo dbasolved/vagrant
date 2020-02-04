@@ -122,7 +122,7 @@ su -l oracle -c "$OGG_HOME/bin/oggca.sh -silent -responseFile /vagrant/ora-respo
 rm -f /vagrant/ora-response/oggca_deployment.rsp
 
 cp /vagrant/ora-response/oggca_deployment.rsp.tmpl /vagrant/ora-response/oggca_deployment.rsp 
-sed -i -e "s|###DEPLOYMENT_NAME###|Boston|g" /vagrant/ora-response/oggca_deployment.rsp
+sed -i -e "s|###DEPLOYMENT_NAME###|NewYork|g" /vagrant/ora-response/oggca_deployment.rsp
 sed -i -e "s|###PWD###|WElcome12345##|g" /vagrant/ora-response/oggca_deployment.rsp
 sed -i -e "s|###CREATESM###|false|g" /vagrant/ora-response/oggca_deployment.rsp
 sed -i -e "s|###SMPORT###|16000|g" /vagrant/ora-response/oggca_deployment.rsp
